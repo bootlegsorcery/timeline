@@ -1,0 +1,645 @@
+<script src="http://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.js"
+    integrity="sha512-y7gjrQQWm4oI+xvhxiVIW24C/e4bBO3AjOZgxyNQUDvTX3sHau0iViMpxj15zQoC+NENOb9Rz6+itSLwuxQ67g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    const { jsPDF } = window.jspdf
+
+    var isLeft = false;
+    function addTimelineItem() {
+        const timeline = document.getElementById('timeline');
+        // Create a new list item
+        const newListItem = document.createElement('li');
+        newListItem.innerHTML = `
+                <div class="direction-${isLeft ? "l" : "r"}">
+                    <div class="flag-wrapper">
+                        <span class="hexa"></span>
+                        <span class="flag" contenteditable="true">New Element</span>
+                        <span class="time-wrapper"><span class="time" contenteditable="true">Nov 2023</span></span>
+                    </div>
+                    <br/>
+                    <div class="desc" contenteditable="true">Description of the new element.</div>
+                </div>
+        `;
+
+        // Append the new list item to the timeline
+        timeline.appendChild(newListItem);
+        isLeft = !isLeft;
+    };
+
+    function saveTimelinePNG() {
+        html2canvas(document.querySelector("#capture"))
+        .then(canvas => {
+                canvas.toBlob(blob => {
+                saveAs(blob, "timeline.png");
+            }, "image/png");
+        });
+    }
+
+    function saveTimelineJPEG() {
+            html2canvas(document.querySelector("#capture"))
+                .then(canvas => {
+                    canvas.toBlob(blob => {
+                        saveAs(blob, "timeline.jpeg");
+                    }, "image/jpeg");
+                });
+        }
+
+    function saveTimelineHTML() {
+        let content = document.querySelector("#capture").innerHTML.replaceAll('contenteditable="true"', '');
+        let blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        saveAs(blob, "timeline.html");
+    }
+
+    function saveTimelinePDF() {
+        const data = document.querySelector("#capture");
+        html2canvas(data).then((canvas) => {
+            const imgWidth = 208;
+            const pageHeight = 295;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 0;
+            heightLeft -= pageHeight;
+            const doc = new jsPDF('p', 'mm');
+            doc.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(canvas, 'PNG', 0, position, imgWidth, imgHeight, '', 'FAST');
+                heightLeft -= pageHeight;
+            }
+            doc.save('Downld.pdf');
+        });
+
+    }
+</script>
+
+<!-- https://www.svgrepo.com/collection/simple-file-types-line-vectors/ -->
+
+<button onclick="addTimelineItem()" title="Add Event">
+    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 12H20M12 4V20" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+</button>
+
+<button onclick="saveTimelinePNG()" title="Save Timeline as PNG">
+    <?xml version="1.0" ?>
+    
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="30px" height="30px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    
+        <!-- <defs>
+    
+            <style>
+                .cls-1 {
+                    fill: #101010;
+                }
+            </style>
+    
+        </defs> -->
+    
+        <title />
+    
+        <g id="xxx-word">
+    
+            <path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,0,1,10,0V95h70a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z" />
+    
+            <path class="cls-1"
+                d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z" />
+    
+            <path class="cls-1" d="M275,280H125a5,5,0,0,1,0-10H275a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1" d="M200,330H125a5,5,0,0,1,0-10h75a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z" />
+    
+            <path class="cls-1"
+                d="M139.82,236h-9.61V182.68h21.84q9.34,0,13.85,4.71a16.37,16.37,0,0,1-.37,22.95,17.49,17.49,0,0,1-12.38,4.53H139.82Zm0-29.37h11.37q4.45,0,6.8-2.19a7.58,7.58,0,0,0,2.34-5.82,8,8,0,0,0-2.17-5.62q-2.17-2.34-7.83-2.34H139.82Z" />
+    
+            <path class="cls-1"
+                d="M218.42,236h-9.34l-20.23-34.06-1.52-2.54q-.47-.78-1.45-2.46V236h-7.73V182.68h10.63l18.67,31.41,3.4,5.74V182.68h7.58Z" />
+    
+            <path class="cls-1"
+                d="M270.61,208.73V236h-4.26l-2.93-7.19q-4.65,8-14.41,8-10.9,0-16.27-8.28a34.45,34.45,0,0,1-5.37-19.18q0-11.52,6-19.51t16.78-8q8,0,13.24,4.67a20.55,20.55,0,0,1,6.56,11.62l-8.36,1.48q-2.34-9.76-11.21-9.77a11.17,11.17,0,0,0-9.24,4.61q-3.57,4.61-3.57,14.18,0,20.2,12.66,20.2a10.74,10.74,0,0,0,8.14-3.4,12.52,12.52,0,0,0,3.22-9h-11v-7.73Z" />
+    
+        </g>
+    
+    </svg>
+</button>
+
+<button onclick="saveTimelineJPEG()" title="Save Timeline as JPG">
+    <?xml version="1.0" ?>
+    
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="30px" height="30px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    
+        <!-- <defs>
+    
+            <style>
+                .cls-1 {
+                    fill: #101010;
+                }
+            </style>
+    
+        </defs> -->
+    
+        <title />
+    
+        <g id="xxx-word">
+    
+            <path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z" />
+    
+            <path class="cls-1"
+                d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z" />
+    
+            <path class="cls-1" d="M275,280H125a5,5,0,0,1,0-10H275a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1" d="M200,330H125a5,5,0,0,1,0-10h75a5,5,0,1,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z" />
+    
+            <path class="cls-1"
+                d="M159.86,182.68v36.8q0,9.18-4,13.26t-12.64,4.08a28.7,28.7,0,0,1-7.77-.82v-7.73q4.37.31,6.17.31,4.8,0,6.56-1.8t1.76-7.3v-36.8Z" />
+    
+            <path class="cls-1"
+                d="M180.68,236h-9.61V182.68h21.84q9.34,0,13.85,4.71a16.37,16.37,0,0,1-.37,22.95A17.49,17.49,0,0,1,194,214.87H180.68Zm0-29.37h11.37q4.45,0,6.8-2.19a7.58,7.58,0,0,0,2.34-5.82A8,8,0,0,0,199,193q-2.17-2.34-7.83-2.34H180.68Z" />
+    
+            <path class="cls-1"
+                d="M259.47,208.73V236h-4.26l-2.93-7.19q-4.65,8-14.41,8-10.9,0-16.27-8.28a34.45,34.45,0,0,1-5.37-19.18q0-11.52,6-19.51t16.78-8q8,0,13.24,4.67a20.55,20.55,0,0,1,6.56,11.62l-8.36,1.48q-2.34-9.76-11.21-9.77a11.17,11.17,0,0,0-9.24,4.61q-3.57,4.61-3.57,14.18,0,20.2,12.66,20.2a10.74,10.74,0,0,0,8.14-3.4,12.52,12.52,0,0,0,3.22-9h-11v-7.73Z" />
+    
+        </g>
+    
+    </svg>
+</button>
+
+<button onclick="saveTimelineHTML()" title="Save Timeline as HTML">
+    <?xml version="1.0" ?>
+    
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="30px" height="30px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    
+        <!-- <defs>
+    
+            <style>
+                .cls-1 {
+                    fill: #101010;
+                }
+            </style>
+    
+        </defs> -->
+    
+        <title />
+    
+        <g id="xxx-word">
+    
+            <path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,1,1,10,0V95h70a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z" />
+    
+            <path class="cls-1"
+                d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z" />
+    
+            <path class="cls-1" d="M275,280H125a5,5,0,1,1,0-10H275a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1" d="M200,330H125a5,5,0,1,1,0-10h75a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z" />
+    
+            <path class="cls-1" d="M148.48,236h-9.61V212.84H118.52V236h-9.61V182.68h9.61v21.91h20.35V182.68h9.61Z" />
+    
+            <path class="cls-1" d="M178.83,236H168.52V190.92H154.34v-8.24H193v8.24H178.83Z" />
+    
+            <path class="cls-1"
+                d="M251.17,236h-9.8V189.32L226.6,236h-5l-14.84-46.68V236h-7.85V182.68h15L225.08,217l11-34.34h15.12Z" />
+    
+            <path class="cls-1" d="M295.74,236H262.93V182.68H273v44.61h22.7Z" />
+    
+        </g>
+    
+    </svg>
+</button>
+
+<button onclick="saveTimelinePDF()" title="Save Timeline as PDF">
+    <?xml version="1.0" ?>
+    
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <svg width="30px" height="30px" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+    
+        <!-- <defs>
+    
+            <style>
+                .cls-1 {
+                    fill: #ff402f;
+                }
+            </style>
+    
+        </defs> -->
+    
+        <title />
+    
+        <g id="xxx-word">
+    
+            <path class="cls-1" d="M325,105H250a5,5,0,0,1-5-5V25a5,5,0,0,1,10,0V95h70a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,154.83a5,5,0,0,1-5-5V102.07L247.93,30H100A20,20,0,0,0,80,50v98.17a5,5,0,0,1-10,0V50a30,30,0,0,1,30-30H250a5,5,0,0,1,3.54,1.46l75,75A5,5,0,0,1,330,100v49.83A5,5,0,0,1,325,154.83Z" />
+    
+            <path class="cls-1"
+                d="M300,380H100a30,30,0,0,1-30-30V275a5,5,0,0,1,10,0v75a20,20,0,0,0,20,20H300a20,20,0,0,0,20-20V275a5,5,0,0,1,10,0v75A30,30,0,0,1,300,380Z" />
+    
+            <path class="cls-1" d="M275,280H125a5,5,0,0,1,0-10H275a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1" d="M200,330H125a5,5,0,0,1,0-10h75a5,5,0,0,1,0,10Z" />
+    
+            <path class="cls-1"
+                d="M325,280H75a30,30,0,0,1-30-30V173.17a30,30,0,0,1,30-30h.2l250,1.66a30.09,30.09,0,0,1,29.81,30V250A30,30,0,0,1,325,280ZM75,153.17a20,20,0,0,0-20,20V250a20,20,0,0,0,20,20H325a20,20,0,0,0,20-20V174.83a20.06,20.06,0,0,0-19.88-20l-250-1.66Z" />
+    
+            <path class="cls-1"
+                d="M145,236h-9.61V182.68h21.84q9.34,0,13.85,4.71a16.37,16.37,0,0,1-.37,22.95,17.49,17.49,0,0,1-12.38,4.53H145Zm0-29.37h11.37q4.45,0,6.8-2.19a7.58,7.58,0,0,0,2.34-5.82,8,8,0,0,0-2.17-5.62q-2.17-2.34-7.83-2.34H145Z" />
+    
+            <path class="cls-1"
+                d="M183,236V182.68H202.7q10.9,0,17.5,7.71t6.6,19q0,11.33-6.8,18.95T200.55,236Zm9.88-7.85h8a14.36,14.36,0,0,0,10.94-4.84q4.49-4.84,4.49-14.41a21.91,21.91,0,0,0-3.93-13.22,12.22,12.22,0,0,0-10.37-5.41h-9.14Z" />
+    
+            <path class="cls-1" d="M245.59,236H235.7V182.68h33.71v8.24H245.59v14.57h18.75v8H245.59Z" />
+    
+        </g>
+    
+    </svg>
+</button>
+
+<div id="capture">
+    <style>
+        /* @import url(https://fonts.googleapis.com/css?family=Raleway:400,900); */
+    
+        body {
+            font-family: 'Raleway', sans-serif;
+            color: #333;
+        }
+    
+        header h1 {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 0;
+        }
+    
+        header p {
+            text-align: center;
+            margin-bottom: 0;
+        }
+    
+        .hexa {
+            border: 0px;
+            float: left;
+            text-align: center;
+            height: 35px;
+            width: 60px;
+            font-size: 22px;
+            background: #f0f0f0;
+            color: #3c3c3c;
+            position: relative;
+            margin-top: 15px;
+        }
+    
+        .hexa:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-bottom: 15px solid #f0f0f0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            top: -15px;
+        }
+    
+        .hexa:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 30px solid transparent;
+            border-right: 30px solid transparent;
+            border-top: 15px solid #f0f0f0;
+            bottom: -15px;
+        }
+    
+        .timeline {
+            position: relative;
+            padding: 0;
+            width: 100%;
+            margin-top: 20px;
+            list-style-type: none;
+        }
+    
+        .timeline:before {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            content: ' ';
+            display: block;
+            width: 2px;
+            height: 100%;
+            margin-left: -1px;
+            background: rgb(213, 213, 213);
+            background: -moz-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(30, 87, 153, 1)), color-stop(100%, rgba(125, 185, 232, 1)));
+            background: -webkit-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+            background: -o-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+            background: -ms-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+            background: linear-gradient(to bottom, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+            z-index: 5;
+        }
+    
+        .timeline li {
+            padding: 2em 0;
+        }
+    
+        .timeline .hexa {
+            width: 16px;
+            height: 10px;
+            position: absolute;
+            background: #00c4f3;
+            z-index: 5;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            top: -30px;
+            margin-top: 0;
+        }
+    
+        .timeline .hexa:before {
+            border-bottom: 4px solid #00c4f3;
+            border-left-width: 8px;
+            border-right-width: 8px;
+            top: -4px;
+        }
+    
+        .timeline .hexa:after {
+            border-left-width: 8px;
+            border-right-width: 8px;
+            border-top: 4px solid #00c4f3;
+            bottom: -4px;
+        }
+    
+        .direction-l,
+        .direction-r {
+            float: none;
+            width: 100%;
+            text-align: center;
+        }
+    
+        .flag-wrapper {
+            text-align: center;
+            position: relative;
+        }
+    
+        .flag {
+            position: relative;
+            display: inline;
+            background: rgb(255, 255, 255);
+            font-weight: 600;
+            z-index: 15;
+            padding: 6px 10px;
+            text-align: left;
+            border-radius: 5px;
+        }
+    
+        .direction-l .flag:after,
+        .direction-r .flag:after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: -15px;
+            height: 0;
+            width: 0;
+            margin-left: -8px;
+            border: solid transparent;
+            border-bottom-color: rgb(255, 255, 255);
+            border-width: 8px;
+            pointer-events: none;
+        }
+    
+        .direction-l .flag {
+            -webkit-box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+            box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+        }
+    
+        .direction-r .flag {
+            -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+            -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+        }
+    
+        .time-wrapper {
+            display: block;
+            position: relative;
+            margin: 4px 0 0 0;
+            z-index: 14;
+            line-height: 1em;
+            vertical-align: middle;
+            color: #fff;
+        }
+    
+        .direction-l .time-wrapper {
+            float: none;
+        }
+    
+        .direction-r .time-wrapper {
+            float: none;
+        }
+    
+        .time {
+            background: #00c4f3;
+            display: inline-block;
+            padding: 8px;
+        }
+    
+        .desc {
+            position: relative;
+            width: fit-content;
+            max-width: 90%;
+            overflow-wrap: break-word;
+            margin: 1em 0 0 0;
+            padding: 1em;
+            background: rgb(254, 254, 254);
+            -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+            -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+            box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+            z-index: 15;
+        }
+    
+        .direction-l .desc,
+        .direction-r .desc {
+            position: relative;
+            margin: 1em 1em 0 1em;
+            padding: 1em;
+            z-index: 15;
+            height: auto;
+        }
+    
+        @media(min-width: 768px) {
+            .timeline {
+                width: 660px;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+    
+            .timeline li:after {
+                content: "";
+                display: block;
+                height: 0;
+                clear: both;
+                visibility: hidden;
+            }
+    
+            .timeline .hexa {
+                left: -28px;
+                right: auto;
+                top: 8px;
+            }
+    
+            .timeline .direction-l .hexa {
+                left: auto;
+                right: -28px;
+            }
+    
+            .direction-l {
+                position: relative;
+                width: 310px;
+                float: left;
+                text-align: right;
+            }
+    
+            .direction-r {
+                position: relative;
+                width: 310px;
+                float: right;
+                text-align: left;
+            }
+    
+            .direction-l .flag-wrapper {
+                display: inline-block;
+                right: 20px;
+            }
+    
+            .direction-r .flag-wrapper {
+                display: inline-block;
+                left: 20px;
+            }
+    
+            .flag {
+                font-size: 18px;
+            }
+    
+            .direction-l .flag:after {
+                left: auto;
+                right: -16px;
+                top: 50%;
+                margin-top: -8px;
+                border: solid transparent;
+                border-left-color: rgb(254, 254, 254);
+                border-width: 8px;
+            }
+    
+            .direction-r .flag:after {
+                top: 50%;
+                margin-top: -8px;
+                border: solid transparent;
+                border-right-color: rgb(254, 254, 254);
+                border-width: 8px;
+                left: -8px;
+            }
+    
+            .time-wrapper {
+                display: inline;
+                vertical-align: middle;
+                margin: 0;
+            }
+    
+            .direction-l .time-wrapper {
+                float: left;
+            }
+    
+            .direction-r .time-wrapper {
+                float: right;
+            }
+    
+            .time {
+                padding: 5px 10px;
+            }
+    
+            .direction-l .desc {
+                float: right;
+            }
+    
+            .direction-r .desc {
+                float: left;
+            }
+        }
+    
+        @media(min-width: 992px) {
+            .timeline {
+                width: auto;
+                margin: 0 auto;
+                margin-top: 20px;
+            }
+    
+            .direction-l {
+                position: relative;
+                width: calc(50%);
+                float: left;
+            }
+    
+            .direction-r {
+                position: relative;
+                width: calc(50%);
+                float: right;
+            }
+        }
+    
+        .btn {
+            border: 0px;
+            text-align: center;
+            height: 35px;
+            width: 60px;
+            font-size: 22px;
+            background: #f0f0f0;
+            color: #3c3c3c;
+            margin-top: 15px;
+            transition: background-color 0.3s ease-in-out;
+        }
+    
+        .btn:hover {
+            background-color: #ccc;
+        }
+    
+        .btn.highlight {
+            background-color: #999;
+        }
+    </style>
+
+    <header>
+        <p contenteditable="true">Welcome to the timeline editor!</p>
+        <h1 contenteditable="true">My Awesome Timeline</h1>
+    </header>
+
+    <ul class="timeline" id="timeline">
+    </ul>
+</div>
